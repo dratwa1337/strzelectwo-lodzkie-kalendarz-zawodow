@@ -9,6 +9,7 @@ Serves:
 from __future__ import annotations
 
 import logging
+import os
 from datetime import timedelta
 from functools import lru_cache
 from pathlib import Path
@@ -166,4 +167,5 @@ def api_events():
 # ── Run ────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(debug=False, host="0.0.0.0", port=port)
