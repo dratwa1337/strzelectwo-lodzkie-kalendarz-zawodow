@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalendarz Zawodów Strzeleckich – Łódzkie 2026</title>
+
+    <!-- FullCalendar from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.17/locales/pl.global.min.js"></script>
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+    <h1>
+        <span class="icon">🎯</span>
+        Kalendarz Zawodów Strzeleckich – Łódzkie 2026
+    </h1>
+</div>
+
+<!-- ── Main Layout ── -->
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>🔍 Filtry</h2>
+
+        <div class="filter-group">
+            <label>Rodzaj zawodów</label>
+            <div class="multi-select" data-filter="name">
+                <button type="button" class="ms-toggle">Wszystkie <span class="ms-badge"></span><span class="ms-arrow">▾</span></button>
+                <div class="ms-dropdown">
+                    {% for n in filters.names %}
+                    <label class="ms-option"><input type="checkbox" value="{{ n }}"> {{ n }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>Organizator</label>
+            <div class="multi-select" data-filter="organizer">
+                <button type="button" class="ms-toggle">Wszyscy <span class="ms-badge"></span><span class="ms-arrow">▾</span></button>
+                <div class="ms-dropdown">
+                    {% for org in filters.organizers %}
+                    <label class="ms-option"><input type="checkbox" value="{{ org }}"> {{ org }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>Miejsce</label>
+            <div class="multi-select" data-filter="location">
+                <button type="button" class="ms-toggle">Wszystkie <span class="ms-badge"></span><span class="ms-arrow">▾</span></button>
+                <div class="ms-dropdown">
+                    {% for loc in filters.locations %}
+                    <label class="ms-option"><input type="checkbox" value="{{ loc }}"> {{ loc }}</label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>Dyscyplina</label>
+            <div class="multi-select" data-filter="discipline">
+                <button type="button" class="ms-toggle">Wszystkie <span class="ms-badge"></span><span class="ms-arrow">▾</span></button>
+                <div class="ms-dropdown">
+                    <label class="ms-option"><input type="checkbox" value="pistolet"> Pistolet</label>
+                    <label class="ms-option"><input type="checkbox" value="karabin"> Karabin</label>
+                    <label class="ms-option"><input type="checkbox" value="strzelba"> Strzelba</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label>Rodzaj broni</label>
+            <div class="multi-select" data-filter="weapon">
+                <button type="button" class="ms-toggle">Wszystkie <span class="ms-badge"></span><span class="ms-arrow">▾</span></button>
+                <div class="ms-dropdown">
+                    <label class="ms-option"><input type="checkbox" value="pneumatyczna"> Pneumatyczna</label>
+                    <label class="ms-option"><input type="checkbox" value="palna"> Palna</label>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-reset" onclick="resetFilters()">Wyczyść filtry</button>
+
+        <!-- Legend -->
+        <div class="legend">
+            <h3>Legenda</h3>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #2563eb;"></div>
+                Zawody klubowe
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #dc2626;"></div>
+                Puchar Wojewódzki
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #f97316;"></div>
+                PiRO GP
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #059669;"></div>
+                Mistrzostwa
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats" id="stats">
+            Ładowanie…
+        </div>
+    </aside>
+
+    <!-- Calendar -->
+    <div class="calendar-card">
+        <div id="calendar"></div>
+    </div>
+</div>
+
+<!-- ── Event popover ── -->
+<div class="popover-overlay" id="popover-overlay" onclick="closePopover()"></div>
+<div class="popover" id="popover">
+    <button class="popover-close" onclick="closePopover()">✕</button>
+    <h3 id="popover-title"></h3>
+    <div id="popover-body"></div>
+</div>
+
+<!-- App script -->
+<script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+
+</body>
+</html>

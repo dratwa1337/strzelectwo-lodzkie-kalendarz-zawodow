@@ -1,0 +1,356 @@
+/* ── Variables ── */
+:root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --red: #dc2626;
+    --green: #059669;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+/* ── Header ── */
+.header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header h1 span.icon { font-size: 1.5rem; }
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.btn:hover { background: var(--bg); }
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.btn-primary:hover { background: var(--accent-hover); }
+
+/* ── Layout ── */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Sidebar (Filters) ── */
+.sidebar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    height: fit-content;
+    position: sticky;
+    top: 1.5rem;
+}
+
+.sidebar h2 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* ── Multi-select dropdown ── */
+.multi-select {
+    position: relative;
+}
+
+.ms-toggle {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.ms-toggle:hover {
+    border-color: var(--accent);
+}
+
+.multi-select.open .ms-toggle {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+}
+
+.ms-arrow {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    transition: transform 0.15s;
+}
+
+.multi-select.open .ms-arrow {
+    transform: rotate(180deg);
+}
+
+.ms-badge {
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0 0.45rem;
+    line-height: 1.5;
+    display: none;
+}
+
+.ms-badge.visible {
+    display: inline-block;
+}
+
+.ms-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.4rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.multi-select.open .ms-dropdown {
+    display: block;
+}
+
+.ms-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.ms-option:hover {
+    background: var(--bg);
+}
+
+.ms-option input[type="checkbox"] {
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.btn-reset {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* ── Legend ── */
+.legend {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.legend h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    margin-bottom: 0.3rem;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* ── Calendar Card ── */
+.calendar-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+}
+
+/* ── FullCalendar overrides ── */
+.fc {
+    font-family: inherit;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.15rem !important;
+    font-weight: 600;
+}
+
+.fc .fc-button {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.65rem;
+}
+
+.fc .fc-daygrid-event {
+    border-radius: 4px;
+    padding: 1px 4px;
+    font-size: 0.78rem;
+}
+
+.fc .fc-event-title {
+    font-weight: 500;
+}
+
+/* ── Event detail popover ── */
+.popover-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+}
+
+.popover {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    padding: 1.25rem;
+    width: 320px;
+    max-width: 90vw;
+}
+
+.popover h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    padding-right: 1.5rem;
+}
+
+.popover-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+.popover-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+}
+
+.popover-row .label {
+    color: var(--text-muted);
+    min-width: 90px;
+    flex-shrink: 0;
+}
+
+.popover-row .value {
+    font-weight: 500;
+}
+
+.stats {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.stats strong {
+    color: var(--text);
+}
