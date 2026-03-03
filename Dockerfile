@@ -1,22 +1,25 @@
 FROM python:3.9-slim
 
-ENV USERNAME=appuser
-ENV USER_UID=10453
-ENV USER_GID=$USER_UID
+ARG USER_UID=10453
+ARG USER_GID=${USER_UID}
 
-RUN groupadd --gid ${USER_GID} ${USERNAME} && \
-    useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME}
+RUN groupadd --gid ${USER_GID} appuser && \
+    useradd --uid ${USER_UID} --gid ${USER_GID} --no-log-init -m appuser
 
 WORKDIR /app
 
-COPY uv.lock pyproject.toml .
-RUN pip install uv --no-cache-dir \
-    && uv sync --no-cache-dir
+# Install uv
+RUN pip install uv --no-cache-dir
 
-COPY . .
-RUN chown -R ${USERNAME}:${USERNAME} /app
+# Install dependencies first (cached layer)
+COPY --chown=appuser:appuser uv.lock pyproject.toml ./
+RUN uv sync --frozen --no-cache
 
-USER ${USERNAME}
+# Copy application code
+COPY --chown=appuser:appuser src/ ./src/
+COPY --chown=appuser:appuser data/ ./data/
+
+USER appuser
 
 EXPOSE 8080
-CMD ["uv","run", "src/app.py"]
+CMD ["uv", "run", "--no-sync", "python", "src/app.py"]
